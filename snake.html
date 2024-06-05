@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game with PlayStation Controller</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f4f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #43a047;
+            margin-bottom: 20px;
+        }
+        #game-container {
+            position: relative;
+            width: 90vw;
+            max-width: 400px;
+            height: 90vw;
+            max-height: 400px;
+            background: #fff;
+            border: 5px solid #388e3c;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        #snake-game {
+            width: 100%;
+            height: 100%;
+            background: #e8f5e9;
+            position: relative;
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .controller {
+            display: grid;
+            grid-template-areas:
+                ". up ."
+                "left . right"
+                ". down .";
+            gap: 10px;
+        }
+        .control-button, .return-button {
+            padding: 10px 20px;
+            background: #43a047;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            text-decoration: none;
+        }
+        .control-button:hover, .return-button:hover {
+            background: #388e3c;
+            transform: scale(1.05);
+        }
+        .control-button.up {
+            grid-area: up;
+        }
+        .control-button.left {
+            grid-area: left;
+        }
+        .control-button.right {
+            grid-area: right;
+        }
+        .control-button.down {
+            grid-area: down;
+        }
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .game-over h2 {
+            margin: 0 0 10px;
+            color: #d32f2f;
+        }
+        .game-over button {
+            background: #43a047;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .game-over button:hover {
+            background: #388e3c;
+        }
+        .playstation-controller {
+            display: grid;
+            grid-template-areas:
+                ". up ."
+                "left . right"
+                ". down .";
+            gap: 10px;
+            background-color: #666;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+        .playstation-controller button {
+            padding: 20px 30px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .playstation-controller button:hover {
+            background: #111;
+            transform: scale(1.05);
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        @media (max-width: 600px) {
+            .control-button, .return-button {
+                padding: 8px 15px;
+            }
+            .playstation-controller button {
+                padding: 15px 20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            .control-button, .return-button {
+                padding: 6px 10px;
+            }
+            .playstation-controller button {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Snake Game</h1>
+    <div id="game-container">
+        <canvas id="snake-game"></canvas>
+        <div id="game-over" class="game-over" style="display: none;">
+            <h2>Game Over</h2>
+            <button onclick="restartGame()">Restart</button>
+        </div>
+    </div>
+    <div class="playstation-controller">
+        <button class="control-button up" onclick="changeDirection('up')">▲</button>
+        <button class="control-button left" onclick="changeDirection('left')">◀</button>
+        <button class="control-button right" onclick="changeDirection('right')">▶</button>
+        <button class="control-button down" onclick="changeDirection('down')">▼</button>
+    </div>
+    <a href="Work.html" class="return-button">Return</a>
+
+    <div class="footer">
+        Created by Amir Abubakr
+    </div>
+
+    <script>
+        const canvas = document.getElementById('snake-game');
+        const ctx = canvas.getContext('2d');
+        const gridSize = 20;
+        let snake = [{ x: gridSize * 5, y: gridSize * 5 }];
+        let direction = 'right';
+        let food = { x: Math.floor(Math.random() * 20) * gridSize, y: Math.floor(Math.random() * 20) * gridSize };
+        let score = 0;
+        let gameOver = false;
+
+        function resizeCanvas() {
+            const container = document.getElementById('game-container');
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#43a047';
+            for (let segment of snake) {
+                ctx.fillRect(segment.x, segment.y, gridSize, gridSize);
+            }
+
+            ctx.fillStyle = '#d32f2f';
+            ctx.fillRect(food.x, food.y, gridSize, gridSize);
+        }
+
+        function update() {
+            if (gameOver) return;
+
+            const head = { ...snake[0] };
+
+            switch (direction) {
+                case 'up': head.y -= gridSize; break;
+                case 'down': head.y += gridSize; break;
+                case 'left': head.x -= gridSize; break;
+                case 'right': head.x += gridSize; break;
+            }
+
+            snake.unshift(head);
+
+            if (head.x === food.x && head.y === food.y) {
+                score += 1;
+                food = { x: Math.floor(Math.random() * 20) * gridSize, y: Math.floor(Math.random() * 20) * gridSize };
+            } else {
+                snake.pop();
+            }
+
+            if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height || snakeCollision(head)) {
+                triggerGameOver();
+            }
+        }
+
+        function snakeCollision(head) {
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function triggerGameOver() {
+            gameOver = true;
+            document.getElementById('game-over').style.display = 'block';
+        }
+
+        function restartGame() {
+            snake = [{ x: gridSize * 5, y: gridSize * 5 }];
+            direction = 'right';
+            food = { x: Math.floor(Math.random() * 20) * gridSize, y: Math.floor(Math.random() * 20) * gridSize };
+            score = 0;
+            gameOver = false;
+            document.getElementById('game-over').style.display = 'none';
+            gameLoop();
+        }
+
+        function changeDirection(newDirection) {
+            const oppositeDirections = {
+                'up': 'down',
+                'down': 'up',
+                'left': 'right',
+                'right': 'left'
+            };
+
+            if (direction !== oppositeDirections[newDirection]) {
+                direction = newDirection;
+            }
+        }
+
+        function gameLoop() {
+            if (gameOver) return;
+            update();
+            draw();
+            setTimeout(gameLoop, 100);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>

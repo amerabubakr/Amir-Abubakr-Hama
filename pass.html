@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دروست کەری پاسۆرد</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #ece9e6, #ffffff);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 90%; /* Adjust width to make it responsive */
+            max-width: 500px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        /* Add media query for smaller screens */
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                border-radius: 0; /* Optional: Remove border radius for smaller screens */
+            }
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+
+        .box-input {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2em;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .password-lenght {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .box-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            font-size: 1em;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .settings-box {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .setting-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .switch-button input[type="checkbox"] {
+            display: none;
+        }
+
+        .switch-button label {
+            display: block;
+            width: 40px;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .switch-button label::after {
+            content: '';
+            width: 18px;
+            height: 18px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            transition: all 0.3s;
+        }
+
+        .switch-button input[type="checkbox"]:checked + label {
+            background-color: #4CAF50;
+        }
+
+        .switch-button input[type="checkbox"]:checked + label::after {
+            left: 21px;
+        }
+
+        .download-password1, #button_generate, footer button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .download-password1:hover, #button_generate:hover, footer button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .password-strength {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        .work1{
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            text-decoration: none;
+        }
+
+        .strong {
+            color: green;
+        }
+
+        .weak {
+            color: red;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>دروست کەری پاسۆرد</h1>
+        <div class="box-input">
+            <input type="text" id="input_password" readonly>
+            <span class="error-message" id="error_message"></span>
+        </div>
+        <p id="password_strength" class="password-strength"></p>
+
+        <h2>ماوەکەی</h2>
+        <div class="password-lenght">
+            <div class="box-range">
+                <span>4</span>
+                <input type="range" id="range-selector" min="4" max="34" value="15" onchange="updateTextInput(this.value)">
+                <span>34</span>
+            </div>
+            <input type="number" id="number-selector" min="4" max="34" value="15" oninput="updateRangeInput(this.value)">
+        </div>
+
+        <h2>پێکهاتەکەی</h2>
+        <div class="settings-box">
+            <div class="setting-option">
+                <p>لە پیتی کەپیتاڵ پێک هاتبێت</p>
+                <div class="switch-button">
+                    <input type="checkbox" id="uppercase">
+                    <label for="uppercase" class="button-label"></label>
+                </div>
+            </div>
+            <div class="setting-option">
+                <p>لە پیتی سمۆڵ پێک هاتبێت</p>
+                <div class="switch-button">
+                    <input type="checkbox" id="lowercase">
+                    <label for="lowercase" class="button-label"></label>
+                </div>
+            </div>
+            <div class="setting-option">
+                <p>لە ژمارە پێکهاتبێت</p>
+                <div class="switch-button">
+                    <input type="checkbox" id="numbers">
+                    <label for="numbers" class="button-label"></label>
+                </div>
+            </div>
+            <div class="setting-option">
+                <p>لە هێماکان پێکهاتبێت</p>
+               
+                <div class="switch-button">
+                    <input type="checkbox" id="symbols">
+                    <label for="symbols" class="button-label"></label>
+                </div>
+            </div>
+        </div>
+
+        <button id="button_generate">دروستکردنی پاسۆرد</button>
+        <button class="download-password1" onclick="downloadPassword()">داونلۆد کردنی پاسۆرد</button>
+        <a class="work1" href="Work.html">گەڕانەوە</a> <!-- Moved "Work.html" button here -->
+    </div>
+
+    <script>
+        document.getElementById('button_generate').addEventListener('click', generatePassword);
+
+        function generatePassword() {
+            const length = parseInt(document.getElementById('number-selector').value);
+            const uppercase = document.getElementById('uppercase').checked;
+            const lowercase = document.getElementById('lowercase').checked;
+            const numbers = document.getElementById('numbers').checked;
+            const symbols = document.getElementById('symbols').checked;
+
+            if (!uppercase && !lowercase && !numbers && !symbols) {
+                showErrorMessage('پێکهاتەکان هەڵبژێرە');
+                return;
+            }
+
+            let charset = '';
+            if (uppercase) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            if (lowercase) charset += 'abcdefghijklmnopqrstuvwxyz';
+            if (numbers) charset += '0123456789';
+            if (symbols) charset += '!@#$%^&*()_+-={}[]|:;<>,.?/~';
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += charset.charAt(Math.floor(Math.random() * charset.length));
+            }
+
+            document.getElementById('input_password').value = password;
+
+            // Clear previous message
+            document.getElementById('password_strength').innerText = '';
+
+            // Display password strength
+            let strengthPercentage = calculateStrength(password);
+            const strengthIndicator = document.getElementById('password_strength');
+            strengthIndicator.classList.remove('strong', 'weak');
+            if (strengthPercentage >= 50) {
+                strengthIndicator.classList.add('strong');
+                strengthIndicator.innerText = `بەهێزی پاسۆرد: ${strengthPercentage.toFixed(2)}% (بەهێز)`;
+            } else {
+                strengthIndicator.classList.add('weak');
+                strengthIndicator.innerText = `بەهێزی پاسۆرد: ${strengthPercentage.toFixed(2)}% (لاواز)`;
+            }
+        }
+
+        function calculateStrength(password) {
+            let strength = 0;
+            const regex = {
+                uppercase: /[A-Z]/,
+                lowercase: /[a-z]/,
+                number: /[0-9]/,
+                symbol: /[!@#$%^&*()_+\-=[\]{}|:;<>,.?/~]+/
+            };
+
+            if (regex.uppercase.test(password)) strength += 25;
+            if (regex.lowercase.test(password)) strength += 25;
+            if (regex.number.test(password)) strength += 25;
+            if (regex.symbol.test(password)) strength += 25;
+
+            return strength;
+        }
+
+        function downloadPassword() {
+            const password = document.getElementById('input_password').value;
+            if (!password) {
+                alert('پاسۆردی دروستکراو نییە!');
+                return;
+            }
+
+            const blob = new Blob([password], { type: 'text/plain' });
+            const anchor = document.createElement('a');
+            anchor.download = 'password.txt';
+            anchor.href = window.URL.createObjectURL(blob);
+            anchor.click();
+        }
+
+        function showErrorMessage(message) {
+            const errorMessage = document.getElementById('error_message');
+            errorMessage.innerText = message;
+        }
+
+        function updateTextInput(val) {
+            document.getElementById('number-selector').value = val;
+        }
+
+        function updateRangeInput(val) {
+            document.getElementById('range-selector').value = val;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me - Amir Abubakr</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f4f8;
+            color: #333;
+        }
+        header {
+            background: linear-gradient(to right, #43a047, #388e3c);
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+            animation: slideInFromLeft 1s ease-in-out;
+        }
+        @keyframes slideInFromLeft {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+        .container {
+            width: 80%;
+            margin: 30px auto;
+            overflow: hidden;
+        }
+        .main-content {
+            background: #fff;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .main-content:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .main-content h2 {
+            color: #388e3c;
+            border-bottom: 2px solid #2e7d32;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .main-content h2::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 4px;
+            background: #2e7d32;
+            left: 0;
+            bottom: -10px;
+            border-radius: 2px;
+        }
+        .main-content p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        .main-content ul {
+            list-style: none;
+            padding: 0;
+        }
+        .main-content ul li {
+            background: #e8f5e9;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-left: 4px solid #2e7d32;
+            transition: background 0.3s ease;
+        }
+        .main-content ul li:hover {
+            background: #c8e6c9;
+        }
+        .return-button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background: #43a047;
+            color: #fff;
+            text-decoration: none;
+            font-size: 1em;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .return-button:hover {
+            background: #388e3c;
+        }
+        footer {
+            background: #43a047;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            border-top: #388e3c 3px solid;
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 1s ease-in forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="fade-in">About Me</h1>
+    </header>
+    <div class="container">
+        <div class="main-content fade-in">
+            <h2>Amir Abubakr</h2>
+            <p>Hello! I'm Amir Abubakr, I Live in Saidsadq. I have a strong background in computer networks and use computer and develop website, having completed my studies in the Network Department at the University of Garmian.</p>
+            <h2>Education</h2>
+            <p>I graduated from the University of Garmian, where I gained comprehensive knowledge in network systems and infrastructure. I completed several courses that expanded my skill set, including:</p>
+            <ul>
+                <li>HTML</li>
+                <li>CSS</li>
+                <li>Python</li>
+                <li>Java</li>
+                <li>Java OOP</li>
+                <li>Access</li>
+                <li>HCIA Data Communication</li>
+                <li>Microsoft Office</li>
+            </ul>
+            <h2>Projects</h2>
+            <p>I have applied my skills to various projects, showcasing my ability to develop and implement solutions effectively:</p>
+            <ul>
+                <li>Game Development: Created a classic Snake game.</li>
+                <li>Database Management: Developed databases using Microsoft Access.</li>
+                <li>Research Projects: Conducted and completed more than four research projects.</li>
+                <li>Web Development: Designed and built a password generator using HTML, CSS, and JavaScript.</li>
+                <li>Full Web Designs: Crafted full website designs using HTML and CSS, demonstrating my ability to combine aesthetic design with functional coding.</li>
+            </ul>
+            <h2>Future Goals</h2>
+            <p>I am continually learning and growing in the field of technology, aiming to expand my expertise and take on more challenging projects. My passion lies in creating innovative solutions and contributing to the advancement of technology.</p>
+            <p>Feel free to connect with me to discuss potential collaborations, share ideas, or simply chat about the latest trends in tech!</p>
+            <a href="index.html" class="return-button">Return to Main Page</a>
+        </div>
+    </div>
+    <footer>
+        <p>© 2024 Amir Abubakr</p>
+    </footer>
+</body>
+</html>

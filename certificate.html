@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amer Abubakr</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .slider {
+            width: 80%;
+            max-width: 800px;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            background-color: #fff;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .slide {
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .slide img {
+            width: 100%; /* Make image fill its container */
+            height: auto; /* Maintain aspect ratio */
+            display: block;
+            border-radius: 15px;
+        }
+
+        .navigation-manual {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Increased gap between buttons */
+            margin-top: 15px; /* Adjusted to position below the slider */
+        }
+
+        /* Navigation button design */
+        .manual-btn {
+            border: 2px solid #2538e6;
+            width: 30px; /* Increased width */
+            height: 30px; /* Increased height */
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.4s, transform 0.4s;
+        }
+
+        .manual-btn:hover {
+            background: #25f809;
+            transform: scale(1.2);
+        }
+
+        .manual-btn.active {
+            background: #0cf105;
+        }
+
+        /* Button for returning to homepage */
+        .return-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #09f330;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .return-button:hover {
+            background-color: #0bf10b;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <!-- Slider Container -->
+        <div class="slider">
+            <!-- Slides Wrapper -->
+            <div class="slides" id="slides">
+                <div class="slide">
+                    <img src="img/java programming.JPG" alt="Slide 1">
+                </div>
+                <div class="slide">
+                    <img src="img/html.JPG" alt="Slide 2">
+                </div>
+                <div class="slide">
+                    <img src="img/HCIAdatacommunication.JPG" alt="Slide 3">
+                </div>
+                <div class="slide">
+                    <img src="img/css.JPG" alt="Slide 4">
+                </div>
+                <div class="slide">
+                    <img src="img/oop in java.JPG" alt="Slide 5">
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="navigation-manual">
+            <!-- Manual Button 1 -->
+            <span class="manual-btn active" onclick="moveToSlide(0)"></span>
+            <!-- Manual Button 2 -->
+            <span class="manual-btn" onclick="moveToSlide(1)"></span>
+            <!-- Manual Button 3 -->
+            <span class="manual-btn" onclick="moveToSlide(2)"></span>
+            <!-- Manual Button 4 -->
+            <span class="manual-btn" onclick="moveToSlide(3)"></span>
+            <!-- Manual Button 5 -->
+            <span class="manual-btn" onclick="moveToSlide(4)"></span>
+        </div>
+
+        <!-- Button to return to homepage -->
+        <a href="index.html" class="return-button">Return to Homepage</a>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.getElementById('slides');
+        const manualBtns = document.querySelectorAll('.manual-btn');
+
+        function moveToSlide(slideIndex) {
+            const totalSlides = slides.children.length;
+            if (slideIndex >= 0 && slideIndex < totalSlides) {
+                currentSlide = slideIndex;
+                const newTransformValue = -slideIndex * 100;
+                slides.style.transform = `translateX(${newTransformValue}%)`;
+                updateActiveButton(slideIndex);
+            }
+        }
+
+        function updateActiveButton(index) {
+            manualBtns.forEach(btn => btn.classList.remove('active'));
+            manualBtns[index].classList.add('active');
+        }
+    </script>
+</body>
+</html>
